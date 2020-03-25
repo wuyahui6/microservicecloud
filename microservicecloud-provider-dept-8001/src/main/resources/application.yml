@@ -1,0 +1,53 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: microservicecloud-dept
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.1.139:3306/cloudDB01?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver    # mysql\u9A71\u52A8\u5305
+    type: com.alibaba.druid.pool.DruidDataSource   # \u5F53\u524D\u6570\u636E\u6E90\u64CD\u4F5C\u7C7B\u578B
+    #    schema:
+    #      - classpath:sql/department.sql
+    #      - classpath:sql/employee.sql
+    #    initialization-mode: always
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    #   \u914D\u7F6E\u76D1\u63A7\u7EDF\u8BA1\u62E6\u622A\u7684filters\uFF0C\u53BB\u6389\u540E\u76D1\u63A7\u754C\u9762sql\u65E0\u6CD5\u7EDF\u8BA1\uFF0C'wall'\u7528\u4E8E\u9632\u706B\u5899
+    filters: stat,wall,log4j,sql
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+mybatis:
+  config-location: classpath:mybatis/mybatis.cfg.xml        # mybatis\u914D\u7F6E\u6587\u4EF6\u6240\u5728\u8DEF\u5F84
+  type-aliases-package: com.ebon.springcloud.entities    # \u6240\u6709Entity\u522B\u540D\u7C7B\u6240\u5728\u5305
+  mapper-locations:
+    - classpath:mybatis/mapper/**/*.xml                       # mapper\u6620\u5C04\u6587\u4EF6
+
+
+eureka:
+  instance:
+    prefer-ip-address: true # 注册服务的时候使用服务的ip地址
+    instance-id: microservicecloud-dept8001
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+
+
+info:
+  app.name: ebon-microservicecloud
+  company.name: www.ebon.com
+  build.artifactId: @project.artifactId@
+  build.version: @project.version@
+
